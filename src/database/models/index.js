@@ -18,6 +18,8 @@ db.Calendar = require('./calendar')(sequelize);
 db.PlantCare = require('./plantcare')(sequelize);
 db.Statistics = require('./statistics')(sequelize);
 db.Settings = require('./settings')(sequelize);
+db.Finance = require('./finance')(sequelize);
+db.Budget = require('./budget')(sequelize);
 
 // Definiere die Beziehungen zwischen den Modellen
 Object.keys(db).forEach(modelName => {

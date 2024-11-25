@@ -6,10 +6,12 @@ import { BiSolidThermometer } from 'react-icons/bi';
 import { BsCalendar2WeekFill, BsChatDotsFill } from 'react-icons/bs';
 import { GiPlantWatering } from 'react-icons/gi';
 import { MdCleaningServices } from 'react-icons/md';
+import { FaMoneyBillWave } from 'react-icons/fa';
 import Calendar from './Calendar';
 import ChatGPT from './ChatGPT';
 import PlantCare from './PlantCare';
 import CleaningSchedule from './CleaningSchedule';
+import FinanceManager from './FinanceManager';
 
 const API_KEY = 'd5b995c3bb59d2babb1336f5c2fb7198';
 const API_BASE_URL = 'https://api.openweathermap.org/data/2.5';
@@ -24,6 +26,7 @@ function WeatherApp() {
   const [showChat, setShowChat] = useState(false);
   const [showPlantCare, setShowPlantCare] = useState(false);
   const [showCleaningSchedule, setShowCleaningSchedule] = useState(false);
+  const [showFinanceManager, setShowFinanceManager] = useState(false);
 
   useEffect(() => {
     // Initial weather for Berlin
@@ -341,6 +344,17 @@ function WeatherApp() {
             <span className="mt-2 text-sm text-gray-600">Pflanzenpflege</span>
           </div>
 
+          {/* FinanceManager Tool */}
+          <div className="flex flex-col items-center">
+            <div 
+              onClick={() => setShowFinanceManager(true)}
+              className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-2xl shadow-lg flex items-center justify-center cursor-pointer hover:shadow-xl transition-shadow p-3"
+            >
+              <FaMoneyBillWave className="w-10 h-10 text-white" />
+            </div>
+            <span className="mt-2 text-sm text-gray-600">Finanzen</span>
+          </div>
+
           {/* CleaningSchedule Tool */}
           <div className="flex flex-col items-center">
             <div 
@@ -353,7 +367,7 @@ function WeatherApp() {
           </div>
 
           {/* Placeholder für weitere Tools */}
-          {[...Array(2)].map((_, index) => (
+          {[...Array(1)].map((_, index) => (
             <div key={index} className="w-16 h-16 bg-gray-100 rounded-2xl opacity-25"></div>
           ))}
         </div>
@@ -435,6 +449,33 @@ function WeatherApp() {
             </div>
             <div className="bg-gray-50 -m-8 p-8 rounded-b-2xl">
               <PlantCare onClose={() => setShowPlantCare(false)} />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* FinanceManager Modal */}
+      {showFinanceManager && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 w-11/12 max-w-6xl max-h-[90vh] overflow-auto relative">
+            <div className="flex justify-between items-center mb-6 sticky top-0 bg-white pb-4 border-b">
+              <div className="flex items-center">
+                <div className="bg-gradient-to-br from-yellow-400 to-yellow-600 w-12 h-12 rounded-xl flex items-center justify-center mr-4">
+                  <FaMoneyBillWave className="w-8 h-8 text-white" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-800">Finanzverwaltung</h2>
+              </div>
+              <button 
+                onClick={() => setShowFinanceManager(false)}
+                className="bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 rounded-lg p-2 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="bg-gray-50 -m-8 p-8 rounded-b-2xl">
+              <FinanceManager onClose={() => setShowFinanceManager(false)} />
             </div>
           </div>
         </div>

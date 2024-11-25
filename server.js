@@ -7,9 +7,17 @@ const db = require('./src/database/models');
 
 const app = express();
 
+// Logging Middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  console.log('Request Headers:', req.headers);
+  next();
+});
+
 app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE']
+  origin: ['http://localhost:3000', 'http://localhost:5173'], // Allow both React and Vite default ports
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type']
 }));
 
 // Erhöhe die maximale Anfragegröße auf 10MB
@@ -261,6 +269,138 @@ app.post('/api/weather', async (req, res) => {
     res.json(weather);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+// Finanz-Routen
+app.get('/api/finance/transactions', async (req, res) => {
+  try {
+    const { month } = req.query;
+    
+    let whereClause = {};
+    if (month) {
+      const [year, monthNum] = month.split('-');
+      whereClause = {
+        year: parseInt(year),
+        month: parseInt(monthNum)
+      };
+    }
+    
+    const transactions = await db.Finance.findAll({
+      where: whereClause,
+      order: [['date', 'DESC']]
+    });
+    
+    res.json(transactions);
+  } catch (error) {
+    console.error('Error fetching transactions:', error);
+    res.status(500).json({ error: 'Internal server error', details: error.message });
+  }
+});
+
+app.post('/api/finance/transactions', async (req, res) => {
+  try {
+    console.log('POST /api/finance/transactions');
+    console.log('Request body:', req.body);
+    
+    const { description, amount, date, category, type, month, year } = req.body;
+    
+    // Validierung
+    if (!description || !amount || !date || !category || !type) {
+      console.error('Validation failed:', { description, amount, date, category, type });
+      return res.status(400).json({ 
+        error: 'Alle Felder müssen ausgefüllt sein',
+        details: {
+          description: !description,
+          amount: !amount,
+          date: !date,
+          category: !category,
+          type: !type
+        }
+      });
+    }
+    
+    const transaction = await db.Finance.create({
+      description,
+      amount: parseFloat(amount),
+      date: new Date(date),
+      category,
+      type,
+      month: month || new Date(date).getMonth() + 1,
+      year: year || new Date(date).getFullYear()
+    });
+    
+    console.log('Created transaction:', transaction.toJSON());
+    res.status(201).json(transaction);
+  } catch (error) {
+    console.error('Error creating transaction:', error);
+    res.status(500).json({ 
+      error: 'Internal server error', 
+      message: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
+  }
+});
+
+app.get('/api/finance/budget', async (req, res) => {
+  try {
+    const { month } = req.query;
+    const [year, monthNum] = month.split('-');
+    
+    const budget = await db.Budget.findOne({
+      where: {
+        year: parseInt(year),
+        month: monthNum
+      }
+    });
+    
+    console.log('Fetched budget:', budget);
+    res.json({ budget: budget ? budget.amount : 0 });
+  } catch (error) {
+    console.error('Error fetching budget:', error);
+    res.status(500).json({ error: 'Internal server error', details: error.message });
+  }
+});
+
+app.post('/api/finance/budget', async (req, res) => {
+  try {
+    console.log('Creating/updating budget with data:', req.body);
+    const { year, month, budget } = req.body;
+    
+    const [budgetRecord, created] = await db.Budget.findOrCreate({
+      where: { year, month },
+      defaults: { amount: budget }
+    });
+    
+    if (!created) {
+      budgetRecord.amount = budget;
+      await budgetRecord.save();
+    }
+    
+    console.log('Created/updated budget:', budgetRecord);
+    res.json({ budget: budgetRecord.amount });
+  } catch (error) {
+    console.error('Error updating budget:', error);
+    res.status(500).json({ error: 'Internal server error', details: error.message });
+  }
+});
+
+app.delete('/api/finance/transactions/:id', async (req, res) => {
+  try {
+    console.log('DELETE /api/finance/transactions/:id', req.params.id);
+    const transaction = await db.Finance.findByPk(req.params.id);
+    
+    if (!transaction) {
+      console.log('Transaction not found');
+      return res.status(404).json({ error: 'Transaktion nicht gefunden' });
+    }
+    
+    await transaction.destroy();
+    console.log('Transaction deleted');
+    res.json({ message: 'Transaktion erfolgreich gelöscht' });
+  } catch (error) {
+    console.error('Error deleting transaction:', error);
+    res.status(500).json({ error: 'Interner Serverfehler', details: error.message });
   }
 });
 
