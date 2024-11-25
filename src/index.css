@@ -1,0 +1,276 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Basis-Kalender-Styles */
+.rbc-calendar {
+  height: 100%;
+  min-height: 580px;
+}
+
+/* Zeit-Slots und Gutter */
+.rbc-time-view {
+  border: 1px solid #ddd;
+}
+
+.rbc-time-view .rbc-time-gutter,
+.rbc-time-view .rbc-time-header-gutter {
+  background-color: #f8f9fa;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding-right: 8px;
+}
+
+.rbc-timeslot-group {
+  border-bottom: 1px solid #f0f0f0;
+  min-height: 40px;
+}
+
+.rbc-time-slot {
+  color: #666;
+}
+
+/* Event-Styles */
+.rbc-event {
+  border: none !important;
+  border-radius: 3px;
+  padding: 2px 4px !important;
+  margin: 1px 2px !important;
+  background-color: transparent;
+}
+
+.rbc-event-content {
+  font-size: 0.85rem;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Wochenansicht */
+.rbc-time-view .rbc-day-slot .rbc-events-container {
+  margin-right: 0;
+}
+
+.rbc-time-view .rbc-day-slot .rbc-event {
+  position: absolute;
+  z-index: 2;
+}
+
+.rbc-time-content {
+  border-top: 2px solid #f0f0f0;
+}
+
+.rbc-time-content > * + * > * {
+  border-left: 1px solid #f0f0f0;
+}
+
+/* Header-Styles */
+.rbc-header {
+  border-bottom: 1px solid #ddd;
+  padding: 6px 3px;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.rbc-header + .rbc-header {
+  border-left: 1px solid #f0f0f0;
+}
+
+/* Toolbar */
+.rbc-toolbar {
+  margin-bottom: 20px;
+}
+
+.rbc-toolbar button {
+  color: #374151;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  padding: 6px 12px;
+  margin: 0 2px;
+  font-size: 0.875rem;
+  border-radius: 0.375rem;
+}
+
+.rbc-toolbar button:hover {
+  background-color: #f3f4f6;
+}
+
+.rbc-toolbar button.rbc-active {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+/* Zeit-Indikator */
+.rbc-current-time-indicator {
+  height: 2px;
+  background-color: #3b82f6;
+  opacity: 0.7;
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+}
+
+/* Heute-Markierung */
+.rbc-today {
+  background-color: rgba(239, 246, 255, 0.6);
+}
+
+/* Event-Hover */
+.rbc-event:hover {
+  z-index: 4;
+}
+
+/* Monatsansicht */
+.rbc-row-content {
+  z-index: 0;
+}
+
+.rbc-month-view {
+  border: 1px solid #ddd;
+}
+
+.rbc-month-row + .rbc-month-row {
+  border-top: none;
+}
+
+/* Allday-Events */
+.rbc-allday-cell {
+  height: auto !important;
+  max-height: 100px !important;
+  overflow-y: auto !important;
+}
+
+.rbc-allday-cell .rbc-event {
+  margin: 1px 5px !important;
+}
+
+/* Zeit-Format */
+.rbc-label {
+  padding: 4px 8px;
+}
+
+/* Agenda-Ansicht */
+.rbc-agenda-view {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.rbc-agenda-table {
+  border: none;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Datumsspalte */
+.rbc-agenda-date-cell {
+  background-color: #2563eb;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 0.75rem 1rem !important;
+  border-right: 1px solid #e5e7eb;
+  position: relative;
+}
+
+.rbc-agenda-date-cell::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Zeitspalte */
+.rbc-agenda-time-cell {
+  padding: 0.75rem 1rem !important;
+  color: #4b5563;
+  font-weight: 500;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Event-Spalte */
+.rbc-agenda-event-cell {
+  padding: 0.75rem 1rem !important;
+  color: #1f2937;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Tabellenkopf */
+.rbc-agenda-view table.rbc-agenda-table thead {
+  border-bottom: 2px solid #e5e7eb;
+  background-color: #f8fafc;
+}
+
+.rbc-agenda-view table.rbc-agenda-table thead > tr > th {
+  font-weight: 600;
+  color: #1f2937;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 1rem !important;
+  border-bottom: 2px solid #e5e7eb;
+  border-right: 1px solid #e5e7eb;
+}
+
+.rbc-agenda-view table.rbc-agenda-table thead > tr > th:last-child {
+  border-right: none;
+}
+
+/* Tabellenzeilen */
+.rbc-agenda-view table.rbc-agenda-table tbody > tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.rbc-agenda-view table.rbc-agenda-table tbody > tr:hover {
+  background-color: #f1f5f9;
+}
+
+.rbc-agenda-view table.rbc-agenda-table tbody > tr:last-child td {
+  border-bottom: none;
+}
+
+/* Zebra-Streifen für bessere Lesbarkeit */
+.rbc-agenda-view table.rbc-agenda-table tbody > tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+.rbc-agenda-view table.rbc-agenda-table tbody > tr:nth-child(even):hover {
+  background-color: #f1f5f9;
+}
+
+/* Event-Styling in der Agenda */
+.rbc-agenda-event-cell .rbc-event {
+  background-color: transparent !important;
+  color: inherit !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.rbc-agenda-event-cell .rbc-event-content {
+  font-weight: 500;
+}
+
+/* Kategorie-Marker in der Agenda */
+.rbc-agenda-event-cell .event-category-marker {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+/* Agenda leerer Zustand */
+.rbc-agenda-empty {
+  color: #6b7280;
+  font-style: italic;
+  padding: 1rem;
+  text-align: center;
+  border-top: 1px solid #e5e7eb;
+}
